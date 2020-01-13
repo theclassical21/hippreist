@@ -1,0 +1,4 @@
+#!/bin/bash
+Refil="bin/.ref/LastTex"
+source ~/"$Refil"
+( vim ~/"$TexBook".tex )

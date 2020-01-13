@@ -1,0 +1,26 @@
+#!/bin/bash
+Fn="System San Fransisco Display:pixelsize=20"
+Library="Files/Notes"
+Refil="bin/.ref/LastTex"
+
+PmS="Choose Section From Library"
+PmB="Choose Book From Section"
+
+Section=$( ls ~/"$Library" | dmenu -b -i -p "$PmS" -fn "$Fn" )
+
+if [ ! " $Section " == "  " ] && [ -d ~/"$Library"/"$Section"  ]; then
+   Book=$( ls ~/"$Library"/"$Section"| sed -n "s/\.tex// p" | dmenu -b -i -p "$PmB" -fn "$Fn" )
+   
+   if [ -f ~/"$Library"/"$Section"/"$Book".tex ]; then
+      
+      TexSec="$Library"/"$Section"
+      TexBook="$TexSec"/"$Book"
+      ( echo "TexBook=$TexBook" > ~/"$Refil" )
+      ( echo "TexSec=$TexSec" >> ~/"$Refil" )
+      
+      ( pdflatex -output-directory ~/"$TexSec" ~/"$TexBook".tex )
+      ( zathura ~/"$TexBook".pdf & )
+      ( Tlaunch -e TexShop & )
+      ( echo ~/"$TexBook".tex | entr pdflatex -output-directory ~/"$TexSec" ~/"$TexBook".tex & )
+   fi
+fi

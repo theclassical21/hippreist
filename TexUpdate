@@ -1,0 +1,14 @@
+#!/bin/bash
+
+Fn="System San Fransisco Display:pixelsize=20"
+
+Pmt="Update from LastTex?"
+Ops="Yes\nNo"
+Slct=$( echo -e "$Ops" | dmenu -b -i -p "$Pmt" -fn "$Font" )
+
+if [ " $Slct " == " Yes " ]; then
+	source ~/bin/.ref/LastTex
+	if [ -f ~/"$TexBook".tex ]; then
+	( pdflatex -output-directory ~/"$TexSec" ~/"$TexBook".tex )
+	fi
+fi
